@@ -4,6 +4,7 @@ import langru
 lvl = ['Администратор','Учитель','Кл.Руководитель']
 
 def justtext(message):
+    notis = 1
     page = SqlGetBy('page', 'id', message.chat.id)
     groupid = SqlGetBy('groupid', 'id', message.chat.id)
     Class = SqlGetByStr('Class', 'id', message.chat.id)
@@ -25,7 +26,9 @@ def justtext(message):
                     bot.send_message(message.chat.id, langru.uved.sendmlass.format(message.json['text']), reply_markup=markup)
             except: pass
 
-    except: pass
+    except:
+        notis = 0
+        pass
 
     try:
         if (page == 9):  # text
@@ -41,6 +44,7 @@ def justtext(message):
                 pass
 
     except:
+        notis = 0
         pass
 
 
@@ -62,7 +66,9 @@ def justtext(message):
                     if (message.json['video']['file_id'] is not None):
                         SendMessage(message, 'video', special=Class)
 
-    except: pass
+    except:
+        notis = 0
+        pass
 
     #addadmin
     try:
@@ -76,7 +82,11 @@ def justtext(message):
                 else:
                     ShowMark(message.chat.id,langru.adm.success.format(lvl[page-3],message.text))
                     SqlUpdate(check,'groupid',page-1)
-    except: pass
+            else:
+                notis = 0
+    except:
+        notis = 0
+        pass
 
     # addadmin
     try:
@@ -98,8 +108,10 @@ def justtext(message):
                         ShowMark(message.chat.id, langru.adm.successes.format(Class, message.text))
                         bot.send_message(check,
                                          'Вас пригласили вступить в класс!\nКласс:{0}. Зайдите в меню, что подтвердить/отменить'.format(Class))
-
+            else:
+                notis = 0
     except:
+        notis = 0
         pass
     try:
         if (page == 8 and message.text != 'Отмена'):
@@ -110,6 +122,7 @@ def justtext(message):
             ShowMark(message.chat.id,langru.adm.successes.format(message.text,phone))
             bot.send_message(check, 'Вас пригласили вступить в класс!\nКласс:{0}. Зайдите в меню, что подтвердить/отменить'.format(Class))
     except:
+        notis = 0
         pass
 
     try:
@@ -135,6 +148,7 @@ def justtext(message):
                                              Class))
 
     except:
+        notis = 0
         pass
 
     try:
@@ -154,6 +168,7 @@ def justtext(message):
                     ShowMark(message.chat.id, langru.adm.successesdel.format(phone))
 
     except:
+        notis = 0
         pass
 
     try:
@@ -168,4 +183,8 @@ def justtext(message):
                              'Вас пригласили вступить в класс!\nКласс:{0}, как родитель. Зайдите в меню, что подтвердить/отменить'.format(
                                  Class))
     except:
+        notis = 0
+
         pass
+
+    if(notis == 0): bot.send_message(message.chat.id,langru.txt.notfound)

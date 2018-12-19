@@ -9,15 +9,13 @@ from tokens import *
 
 logging.basicConfig(filename="error.log", level=logging.INFO)
 
-test = 1
+bot = telebot.TeleBot(testtoken)
 
-if(test == 0):
-    bot = telebot.TeleBot(token)
-else:
-    bot = telebot.TeleBot(testtoken)
+vers = '1.0.1'
 
 markupstandart = types.ReplyKeyboardMarkup(resize_keyboard=True)
 markupstandart.row(langru.menu.menu, langru.button.help)
+
 
 markupstandartadm = types.ReplyKeyboardMarkup(resize_keyboard=True)
 markupstandartadm.row(langru.menu.menu, langru.button.help)
@@ -27,9 +25,8 @@ markupstandartadm.row(langru.button.sendnew,langru.button.invite)
 def handle_start_help(message):
     if(SqlInfo(message.chat.id, 'id', message.chat.id) == False):
         with config.connection.cursor() as cursor:
-                sql = "INSERT INTO `users` (`id`, `groupid`,`nickname`) VALUES (%s, %s,%s)"
-                cursor.execute(sql, (message.chat.id, 1,'тест'))
-        SqlUpdate(message.chat.id, 'nickname', 0)
+                sql = "INSERT INTO `users` (`id`, `groupid`) VALUES (%s, %s, %s)"
+                cursor.execute(sql, (message.chat.id, 1))
         config.connection.commit()
     ShowMark(message.chat.id, langru.txt.hello)
 

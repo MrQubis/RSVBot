@@ -16,6 +16,7 @@ def textcmd(message):
             markup.row(langru.menu.login)
         elif (SqlInfo(message.chat.id, 'ClassInvite', 'None') == False):
             markup.row(langru.menu.classadd)
+        markup.row(langru.menu.about)
         markup.row(langru.button.cancel)
         bot.send_message(message.chat.id, langru.txt.menu, reply_markup=markup)
 
@@ -57,8 +58,9 @@ def textcmd(message):
 
     elif (message.text == langru.button.help):
         ShowMark(message.chat.id, langru.txt.info)
-        if (groupid == 2):
-            ShowMark(message.chat.id, langru.adm.infoadm)
+
+    elif (message.text == langru.menu.about):
+        ShowMark(message.chat.id, langru.txt.about.format(vers))
 
     elif (message.text == langru.button.invite): #приглашение от адм
         if (groupid != 1):
