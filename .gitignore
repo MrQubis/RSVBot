@@ -123,4 +123,9 @@ dmypy.json
 .idea/vcs.xml
 .idea/workspace.xml
 tokens.py.idea/RSVBot.imltokens.py.idea/RSVBot.imltokens.pytokens.py
+.idea/RSVBot.imltelegram-bot.servicetokens.pymysqlconnect.py
+telegram-bot.service
+tokens.py.idea/RSVBot.imlmysqlconnect.pytokens.py
+tokens.py
 .idea/RSVBot.iml
+mysqlconnect.py

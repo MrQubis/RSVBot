@@ -7,11 +7,12 @@ import sys
 
 from tokens import *
 
+
 logging.basicConfig(filename="error.log", level=logging.INFO)
 
 bot = telebot.TeleBot(testtoken)
 
-vers = '1.0.1'
+vers = '1.0.2'
 
 markupstandart = types.ReplyKeyboardMarkup(resize_keyboard=True)
 markupstandart.row(langru.menu.menu, langru.button.help)
@@ -55,10 +56,13 @@ def SendSpecMsg(id,message,type,caption):
         if (type == 'text'):
             bot.send_message(id, langru.txt.messend.format(message.text))
         elif (type == 'photo' and caption != 'None'):
+            bot.send_message(id, langru.txt.messend_attach)
             bot.send_photo(id, message.json['photo'][0]['file_id'], caption=caption)
         elif (type == 'photo' and caption == 'None'):
+            bot.send_message(id, langru.txt.messend_attach)
             bot.send_photo(id, message.json['photo'][0]['file_id'])
         elif (type == 'video'):
+            bot.send_message(id, langru.txt.messend_attach)
             bot.send_video(id, message.json['video']['file_id'])
     except: pass
 
@@ -111,11 +115,7 @@ def ShowInvite(id,msg):
         bot.send_message(id, msg, reply_markup=markupinvite)
 
 def startbot():
-    try:
-        bot.polling(none_stop=True)
-    except:
-        sleep(1)
-        startbot()
+    bot.polling(none_stop=True)
 
 
 if __name__ == '__main__':
