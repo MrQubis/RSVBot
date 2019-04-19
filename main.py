@@ -12,11 +12,10 @@ logging.basicConfig(filename="error.log", level=logging.INFO)
 
 bot = telebot.TeleBot(token, threaded=False)
 
-vers = '1.0.2'
+vers = '1.0.3'
 
 markupstandart = types.ReplyKeyboardMarkup(resize_keyboard=True)
 markupstandart.row(langru.menu.menu, langru.button.help)
-
 
 markupstandartadm = types.ReplyKeyboardMarkup(resize_keyboard=True)
 markupstandartadm.row(langru.menu.menu, langru.button.help)
