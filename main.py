@@ -4,13 +4,13 @@ from time import sleep
 from sqlquery import *
 from telebot import types
 import sys
-
+import time
 from tokens import *
 
 
 logging.basicConfig(filename="error.log", level=logging.INFO)
 
-bot = telebot.TeleBot(testtoken)
+bot = telebot.TeleBot(token, threaded=False)
 
 vers = '1.0.2'
 
@@ -26,7 +26,7 @@ markupstandartadm.row(langru.button.sendnew,langru.button.invite)
 def handle_start_help(message):
     if(SqlInfo(message.chat.id, 'id', message.chat.id) == False):
         with config.connection.cursor() as cursor:
-                sql = "INSERT INTO `users` (`id`, `groupid`) VALUES (%s, %s, %s)"
+                sql = "INSERT INTO `users` (`id`, `groupid`) VALUES (%s, %s)"
                 cursor.execute(sql, (message.chat.id, 1))
         config.connection.commit()
     ShowMark(message.chat.id, langru.txt.hello)
@@ -42,13 +42,17 @@ def handle_start_help(message):
                 SqlUpdate(row['id'], 'sendnew', 0)
                 try:
                     ShowMark(row['id'], langru.txt.update)
-
                 except:
                     continue
         config.connection.commit()
 
 @bot.message_handler(func=lambda message: True, content_types=['text', 'photo','contact','video'])
 def handle_start_help(message):
+    if (SqlInfo(message.chat.id, 'id', message.chat.id) == False):
+        with config.connection.cursor() as cursor:
+            sql = "INSERT INTO `users` (`id`, `groupid`) VALUES (%s, %s)"
+            cursor.execute(sql, (message.chat.id, 1))
+        config.connection.commit()
     cmd.textcmd(message)
 
 def SendSpecMsg(id,message,type,caption):
@@ -114,10 +118,13 @@ def ShowInvite(id,msg):
         markupinvite.row(langru.button.cancel)
         bot.send_message(id, msg, reply_markup=markupinvite)
 
-def startbot():
-    bot.polling(none_stop=True)
+
 
 
 if __name__ == '__main__':
     sys.setrecursionlimit(99999999)
-    startbot()
+    while True:
+        try:
+            bot.polling(none_stop=True)
+        except Exception as e:
+            time.sleep(3)
